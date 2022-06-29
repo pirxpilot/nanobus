@@ -1,162 +1,144 @@
-var splice = require('remove-array-items')
-var nanotiming = require('nanotiming')
-var assert = require('assert')
+const splice = require('remove-array-items')
+const nanotiming = require('@pirxpilot/nanotiming')
+const assert = require('assert')
 
-module.exports = Nanobus
+module.exports = nanobus
 
-function Nanobus (name) {
-  if (!(this instanceof Nanobus)) return new Nanobus(name)
+function nanobus (name = 'nanobus') {
+  let _starListeners = []
+  let _listeners = Object.create(null)
 
-  this._name = name || 'nanobus'
-  this._starListeners = []
-  this._listeners = {}
-}
-
-Nanobus.prototype.emit = function (eventName) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.emit: eventName should be type string or symbol')
-
-  var data = []
-  for (var i = 1, len = arguments.length; i < len; i++) {
-    data.push(arguments[i])
+  const self = {
+    emit,
+    addListener,
+    on: addListener,
+    once,
+    prependListener,
+    prependOnceListener,
+    removeListener,
+    off: removeListener,
+    removeAllListeners,
+    listeners
   }
 
-  var emitTiming = nanotiming(this._name + "('" + eventName.toString() + "')")
-  var listeners = this._listeners[eventName]
-  if (listeners && listeners.length > 0) {
-    this._emit(this._listeners[eventName], data)
-  }
+  return self
 
-  if (this._starListeners.length > 0) {
-    this._emit(this._starListeners, eventName, data, emitTiming.uuid)
-  }
-  emitTiming()
+  function emit (eventName, ...data) {
+    assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.emit: eventName should be type string or symbol')
 
-  return this
-}
-
-Nanobus.prototype.on = Nanobus.prototype.addListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.on: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.on: listener should be type function')
-
-  if (eventName === '*') {
-    this._starListeners.push(listener)
-  } else {
-    if (!this._listeners[eventName]) this._listeners[eventName] = []
-    this._listeners[eventName].push(listener)
-  }
-  return this
-}
-
-Nanobus.prototype.prependListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependListener: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.prependListener: listener should be type function')
-
-  if (eventName === '*') {
-    this._starListeners.unshift(listener)
-  } else {
-    if (!this._listeners[eventName]) this._listeners[eventName] = []
-    this._listeners[eventName].unshift(listener)
-  }
-  return this
-}
-
-Nanobus.prototype.once = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.once: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.once: listener should be type function')
-
-  var self = this
-  this.on(eventName, once)
-  function once () {
-    listener.apply(self, arguments)
-    self.removeListener(eventName, once)
-  }
-  return this
-}
-
-Nanobus.prototype.prependOnceListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependOnceListener: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.prependOnceListener: listener should be type function')
-
-  var self = this
-  this.prependListener(eventName, once)
-  function once () {
-    listener.apply(self, arguments)
-    self.removeListener(eventName, once)
-  }
-  return this
-}
-
-Nanobus.prototype.removeListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.removeListener: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.removeListener: listener should be type function')
-
-  if (eventName === '*') {
-    this._starListeners = this._starListeners.slice()
-    return remove(this._starListeners, listener)
-  } else {
-    if (typeof this._listeners[eventName] !== 'undefined') {
-      this._listeners[eventName] = this._listeners[eventName].slice()
+    const emitTiming = nanotiming(`${name}('${eventName.toString()}')`)
+    const listeners = _listeners[eventName]
+    if (listeners && listeners.length > 0) {
+      _emit(_listeners[eventName], ...data)
     }
 
-    return remove(this._listeners[eventName], listener)
-  }
-
-  function remove (arr, listener) {
-    if (!arr) return
-    var index = arr.indexOf(listener)
-    if (index !== -1) {
-      splice(arr, index, 1)
-      return true
+    if (_starListeners.length > 0) {
+      _emit(_starListeners, eventName, ...data, emitTiming.uuid)
     }
-  }
-}
+    emitTiming()
 
-Nanobus.prototype.removeAllListeners = function (eventName) {
-  if (eventName) {
+    return self
+  }
+
+  function addListener (eventName, listener) {
+    assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.on: eventName should be type string or symbol')
+    assert(typeof listener === 'function', 'nanobus.on: listener should be type function')
+
     if (eventName === '*') {
-      this._starListeners = []
+      _starListeners.push(listener)
     } else {
-      this._listeners[eventName] = []
+      if (!_listeners[eventName]) _listeners[eventName] = []
+      _listeners[eventName].push(listener)
     }
-  } else {
-    this._starListeners = []
-    this._listeners = {}
+    return self
   }
-  return this
+
+  function prependListener (eventName, listener) {
+    assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependListener: eventName should be type string or symbol')
+    assert(typeof listener === 'function', 'nanobus.prependListener: listener should be type function')
+
+    if (eventName === '*') {
+      _starListeners.unshift(listener)
+    } else {
+      if (!_listeners[eventName]) _listeners[eventName] = []
+      _listeners[eventName].unshift(listener)
+    }
+    return self
+  }
+
+  function once (eventName, listener) {
+    assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.once: eventName should be type string or symbol')
+    assert(typeof listener === 'function', 'nanobus.once: listener should be type function')
+
+    return addListener(eventName, once)
+
+    function once (...args) {
+      listener.apply(self, args)
+      removeListener(eventName, once)
+    }
+  }
+
+  function prependOnceListener (eventName, listener) {
+    assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependOnceListener: eventName should be type string or symbol')
+    assert(typeof listener === 'function', 'nanobus.prependOnceListener: listener should be type function')
+
+    return prependListener(eventName, once)
+
+    function once (...args) {
+      listener.apply(self, args)
+      removeListener(eventName, once)
+    }
+  }
+
+  function removeListener (eventName, listener) {
+    assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.removeListener: eventName should be type string or symbol')
+    assert(typeof listener === 'function', 'nanobus.removeListener: listener should be type function')
+
+    if (eventName === '*') {
+      _starListeners = _starListeners.slice()
+      return remove(_starListeners, listener)
+    } else {
+      if (typeof _listeners[eventName] !== 'undefined') {
+        _listeners[eventName] = _listeners[eventName].slice()
+      }
+
+      return remove(_listeners[eventName], listener)
+    }
+
+    function remove (arr, listener) {
+      if (!arr) return
+      const index = arr.indexOf(listener)
+      if (index !== -1) {
+        splice(arr, index, 1)
+        return true
+      }
+    }
+  }
+
+  function removeAllListeners (eventName) {
+    if (eventName) {
+      if (eventName === '*') {
+        _starListeners = []
+      } else {
+        _listeners[eventName] = []
+      }
+    } else {
+      _starListeners = []
+      _listeners = Object.create(null)
+    }
+    return self
+  }
+
+  function listeners (eventName) {
+    const listeners = eventName !== '*' ? _listeners[eventName] : _starListeners
+    return listeners ? [...listeners] : []
+  }
 }
 
-Nanobus.prototype.listeners = function (eventName) {
-  var listeners = eventName !== '*'
-    ? this._listeners[eventName]
-    : this._starListeners
-
-  var ret = []
-  if (listeners) {
-    var ilength = listeners.length
-    for (var i = 0; i < ilength; i++) ret.push(listeners[i])
-  }
-  return ret
-}
-
-Nanobus.prototype._emit = function (arr, eventName, data, uuid) {
+function _emit (arr, ...data) {
   if (typeof arr === 'undefined') return
   if (arr.length === 0) return
-  if (data === undefined) {
-    data = eventName
-    eventName = null
-  }
-
-  if (eventName) {
-    if (uuid !== undefined) {
-      data = [eventName].concat(data, uuid)
-    } else {
-      data = [eventName].concat(data)
-    }
-  }
-
-  var length = arr.length
-  for (var i = 0; i < length; i++) {
-    var listener = arr[i]
+  for (const listener of arr) {
     listener.apply(listener, data)
   }
 }

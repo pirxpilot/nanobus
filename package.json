@@ -3,17 +3,17 @@
   "description": "Tiny message bus",
   "version": "0.0.0",
   "browser": {
-    "assert": "nanoassert"
+    "assert": "@pirxpilot/nanoassert"
   },
   "dependencies": {
-    "nanoassert": "^1.1.0",
-    "nanotiming": "^7.2.0",
-    "remove-array-items": "^1.0.0"
+    "@pirxpilot/nanoassert": "^1.0.0",
+    "@pirxpilot/nanotiming": "^1.0.0",
+    "remove-array-items": "~2"
   },
   "devDependencies": {
     "browserify": "~17",
     "nanobench": "^2.1.0",
-    "standard": "^10.0.3",
+    "standard": "~17",
     "tape": "~5",
     "tape-run": "~10"
   },
