@@ -1,7 +1,7 @@
 {
-  "name": "nanobus",
+  "name": "@pirxpilot/nanobus",
   "description": "Tiny message bus",
-  "version": "4.5.0",
+  "version": "0.0.0",
   "browser": {
     "assert": "nanoassert"
   },
@@ -25,7 +25,7 @@
     "event"
   ],
   "license": "MIT",
-  "repository": "choojs/nanobus",
+  "repository": "pirxpilot/nanobus",
   "scripts": {
     "bench": "node bench.js",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov",
