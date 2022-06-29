@@ -1,5 +1,5 @@
 var splice = require('remove-array-items')
-var nanotiming = require('nanotiming')
+var nanotiming = require('@pirxpilot/nanotiming')
 var assert = require('assert')
 
 module.exports = Nanobus
@@ -13,7 +13,7 @@ function Nanobus (name) {
 }
 
 Nanobus.prototype.emit = function (eventName) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.emit: eventName should be type string or symbol')
+  assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.emit: eventName should be type string or symbol')
 
   var data = []
   for (var i = 1, len = arguments.length; i < len; i++) {
@@ -35,8 +35,8 @@ Nanobus.prototype.emit = function (eventName) {
 }
 
 Nanobus.prototype.on = Nanobus.prototype.addListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.on: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.on: listener should be type function')
+  assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.on: eventName should be type string or symbol')
+  assert(typeof listener === 'function', 'nanobus.on: listener should be type function')
 
   if (eventName === '*') {
     this._starListeners.push(listener)
@@ -48,8 +48,8 @@ Nanobus.prototype.on = Nanobus.prototype.addListener = function (eventName, list
 }
 
 Nanobus.prototype.prependListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependListener: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.prependListener: listener should be type function')
+  assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependListener: eventName should be type string or symbol')
+  assert(typeof listener === 'function', 'nanobus.prependListener: listener should be type function')
 
   if (eventName === '*') {
     this._starListeners.unshift(listener)
@@ -61,8 +61,8 @@ Nanobus.prototype.prependListener = function (eventName, listener) {
 }
 
 Nanobus.prototype.once = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.once: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.once: listener should be type function')
+  assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.once: eventName should be type string or symbol')
+  assert(typeof listener === 'function', 'nanobus.once: listener should be type function')
 
   var self = this
   this.on(eventName, once)
@@ -74,8 +74,8 @@ Nanobus.prototype.once = function (eventName, listener) {
 }
 
 Nanobus.prototype.prependOnceListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependOnceListener: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.prependOnceListener: listener should be type function')
+  assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.prependOnceListener: eventName should be type string or symbol')
+  assert(typeof listener === 'function', 'nanobus.prependOnceListener: listener should be type function')
 
   var self = this
   this.prependListener(eventName, once)
@@ -87,8 +87,8 @@ Nanobus.prototype.prependOnceListener = function (eventName, listener) {
 }
 
 Nanobus.prototype.removeListener = function (eventName, listener) {
-  assert.ok(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.removeListener: eventName should be type string or symbol')
-  assert.equal(typeof listener, 'function', 'nanobus.removeListener: listener should be type function')
+  assert(typeof eventName === 'string' || typeof eventName === 'symbol', 'nanobus.removeListener: eventName should be type string or symbol')
+  assert(typeof listener === 'function', 'nanobus.removeListener: listener should be type function')
 
   if (eventName === '*') {
     this._starListeners = this._starListeners.slice()

@@ -3,11 +3,11 @@
   "description": "Tiny message bus",
   "version": "0.0.0",
   "browser": {
-    "assert": "nanoassert"
+    "assert": "@pirxpilot/nanoassert"
   },
   "dependencies": {
-    "nanoassert": "^1.1.0",
-    "nanotiming": "^7.2.0",
+    "@pirxpilot/nanoassert": "^1.0.0",
+    "@pirxpilot/nanotiming": "^1.0.0",
     "remove-array-items": "^1.0.0"
   },
   "devDependencies": {

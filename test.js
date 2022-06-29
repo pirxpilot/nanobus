@@ -1,6 +1,10 @@
 var tape = require('tape')
 var nanobus = require('./')
 
+/* global globalThis */
+
+globalThis.DEBUG = true
+
 tape('nanobus', function (t) {
   t.test('should assert input types', function (t) {
     t.plan(11)
