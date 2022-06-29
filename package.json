@@ -13,7 +13,7 @@
   "devDependencies": {
     "browserify": "~17",
     "nanobench": "^2.1.0",
-    "standard": "^10.0.3",
+    "standard": "~17",
     "tape": "~5",
     "tape-run": "~10"
   },

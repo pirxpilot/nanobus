@@ -1,5 +1,5 @@
-var tape = require('tape')
-var nanobus = require('./')
+const tape = require('tape')
+const nanobus = require('./')
 
 /* global globalThis */
 
@@ -8,7 +8,7 @@ globalThis.DEBUG = true
 tape('nanobus', function (t) {
   t.test('should assert input types', function (t) {
     t.plan(11)
-    var bus = nanobus()
+    const bus = nanobus()
     t.throws(bus.emit.bind(bus), /string/)
     t.throws(bus.on.bind(bus), /string/)
     t.throws(bus.on.bind(bus, 'foo'), /function/)
@@ -17,8 +17,8 @@ tape('nanobus', function (t) {
     t.throws(bus.removeListener.bind(bus), /string/)
     t.throws(bus.removeListener.bind(bus, 'foo'), /function/)
 
-    var s = Symbol('event')
-    var fn = function () {}
+    const s = Symbol('event')
+    const fn = function () {}
     t.doesNotThrow(bus.emit.bind(bus, s))
     t.doesNotThrow(bus.on.bind(bus, s, fn))
     t.doesNotThrow(bus.once.bind(bus, s, fn))
@@ -27,8 +27,8 @@ tape('nanobus', function (t) {
 
   t.test('should emit messages', function (t) {
     t.plan(4)
-    var bus = nanobus()
-    var obj = { bin: 'baz' }
+    const bus = nanobus()
+    const obj = { bin: 'baz' }
     bus.on('foo:bar', function (data) {
       t.equal(data, obj, 'data was same')
     })
@@ -51,8 +51,8 @@ tape('nanobus', function (t) {
 
   t.test('should prepend listeners', function (t) {
     t.plan(4)
-    var i = 0
-    var bus = nanobus()
+    let i = 0
+    const bus = nanobus()
     bus.on('foo:bar', function (data) {
       t.equal(i, 1)
     })
@@ -79,8 +79,8 @@ tape('nanobus', function (t) {
 
   t.test('should prepend once listeners', function (t) {
     t.plan(3)
-    var i = 0
-    var bus = nanobus()
+    let i = 0
+    const bus = nanobus()
     bus.on('foo:bar', function (data) {
       t.equal(i, 1)
     })
@@ -96,7 +96,7 @@ tape('nanobus', function (t) {
 
   t.test('should emit messages once', function (t) {
     t.plan(1)
-    var bus = nanobus()
+    const bus = nanobus()
     bus.once('foo:bar', function (data) {
       t.pass('called')
     })
@@ -107,8 +107,8 @@ tape('nanobus', function (t) {
 
   t.test('should properly emit messages when using both once() and on() ', function (t) {
     t.plan(2)
-    var bus = nanobus()
-    var i = 0
+    const bus = nanobus()
+    let i = 0
 
     bus.once('foo:bar', function onceIncrement () {
       i++
@@ -135,7 +135,7 @@ tape('nanobus', function (t) {
 
   t.test('should trigger wildcard once', function (t) {
     t.plan(3)
-    var bus = nanobus()
+    const bus = nanobus()
     bus.once('*', function (data) {
       t.pass('called')
     })
@@ -154,7 +154,7 @@ tape('nanobus', function (t) {
 
   t.test('should be able to remove listeners', function (t) {
     t.plan(3)
-    var bus = nanobus()
+    const bus = nanobus()
     bus.on('foo:bar', goodHandler)
     bus.on('foo:bar', badHandler)
     bus.removeListener('foo:bar', badHandler)
@@ -179,8 +179,8 @@ tape('nanobus', function (t) {
 
   t.test('should be able to remove all listeners', function (t) {
     t.plan(1)
-    var bus = nanobus()
-    var i = 0
+    const bus = nanobus()
+    let i = 0
 
     bus.on('foo:bar', handler)
     bus.on('bin:baz', handler)
@@ -197,8 +197,8 @@ tape('nanobus', function (t) {
 
   t.test('should be able to remove all listeners for an event', function (t) {
     t.plan(1)
-    var bus = nanobus()
-    var i = 0
+    const bus = nanobus()
+    let i = 0
 
     bus.on('foo:bar', handler)
     bus.on('bin:baz', handler)
@@ -215,8 +215,8 @@ tape('nanobus', function (t) {
 
   t.test('should be able to have * listeners', function (t) {
     t.plan(12)
-    var bus = nanobus()
-    var i = 0
+    const bus = nanobus()
+    let i = 0
 
     bus.on('foo:bar', handler)
     bus.on('bin:baz', handler)
@@ -274,7 +274,7 @@ tape('nanobus', function (t) {
   })
 
   t.test('should be able to remove listeners that have not been attached', function (t) {
-    var bus = nanobus()
+    const bus = nanobus()
 
     t.doesNotThrow(function () {
       bus.removeListener('yay', handler)
@@ -289,7 +289,7 @@ tape('nanobus', function (t) {
 
   t.test('should be able to get an array of listeners', function (t) {
     t.plan(2)
-    var bus = nanobus()
+    const bus = nanobus()
 
     bus.on('foo', bar)
     bus.on('foo', baz)
@@ -307,8 +307,8 @@ tape('nanobus', function (t) {
 
   t.test('should be able to trigger multiple listeners with same args', function (t) {
     t.plan(6)
-    var obj = {foo: 'bar'}
-    var bus = nanobus()
+    const obj = { foo: 'bar' }
+    const bus = nanobus()
 
     bus.on('foo', function (data) {
       t.deepEqual(data, obj)
