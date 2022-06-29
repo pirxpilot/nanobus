@@ -8,7 +8,7 @@
   "dependencies": {
     "@pirxpilot/nanoassert": "^1.0.0",
     "@pirxpilot/nanotiming": "^1.0.0",
-    "remove-array-items": "^1.0.0"
+    "remove-array-items": "~2"
   },
   "devDependencies": {
     "browserify": "~17",
