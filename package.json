@@ -11,11 +11,9 @@
     "remove-array-items": "~2"
   },
   "devDependencies": {
-    "browserify": "~17",
     "nanobench": "^2.1.0",
     "standard": "~17",
-    "tape": "~5",
-    "tape-run": "~10"
+    "tape": "~5"
   },
   "keywords": [
     "emit",
@@ -26,10 +24,7 @@
   "scripts": {
     "bench": "node bench.js",
     "lint": "standard",
-    "test:browser": "browserify test.js | tape-run",
-    "test:node": "node test.js",
-    "tests-only": "npm run test:node && npm run test:browser",
-    "test": "npm run lint && npm run tests-only"
+    "test": "npm run lint && node test.js"
   },
   "files": [
     "index.js",
