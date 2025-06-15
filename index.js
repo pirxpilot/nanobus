@@ -6,7 +6,7 @@ module.exports = nanobus;
 
 function nanobus(name = 'nanobus') {
   let _starListeners = [];
-  let _listeners = Object.create(null);
+  const _listeners = new Map();
 
   const self = {
     emit,
@@ -30,14 +30,9 @@ function nanobus(name = 'nanobus') {
     );
 
     const emitTiming = nanotiming(`${name}('${eventName.toString()}')`);
-    const listeners = _listeners[eventName];
-    if (listeners && listeners.length > 0) {
-      _emit(_listeners[eventName], ...data);
-    }
-
-    if (_starListeners.length > 0) {
-      _emit(_starListeners, eventName, ...data, emitTiming.uuid);
-    }
+    const listeners = _listeners.get(eventName);
+    _emit(listeners, ...data);
+    _emit(_starListeners, eventName, ...data, emitTiming.uuid);
     emitTiming();
 
     return self;
@@ -53,8 +48,9 @@ function nanobus(name = 'nanobus') {
     if (eventName === '*') {
       _starListeners.push(listener);
     } else {
-      if (!_listeners[eventName]) _listeners[eventName] = [];
-      _listeners[eventName].push(listener);
+      const listeners = _listeners.get(eventName);
+      if (listeners) listeners.push(listener);
+      else _listeners.set(eventName, [listener]);
     }
     return self;
   }
@@ -69,8 +65,9 @@ function nanobus(name = 'nanobus') {
     if (eventName === '*') {
       _starListeners.unshift(listener);
     } else {
-      if (!_listeners[eventName]) _listeners[eventName] = [];
-      _listeners[eventName].unshift(listener);
+      const listeners = _listeners.get(eventName);
+      if (listeners) listeners.unshift(listener);
+      else _listeners.set(eventName, [listener]);
     }
     return self;
   }
@@ -116,14 +113,16 @@ function nanobus(name = 'nanobus') {
       _starListeners = _starListeners.slice();
       return remove(_starListeners, listener);
     }
-    if (typeof _listeners[eventName] !== 'undefined') {
-      _listeners[eventName] = _listeners[eventName].slice();
-    }
 
-    return remove(_listeners[eventName], listener);
+    let listeners = _listeners.get(eventName);
+    if (!listeners) {
+      return;
+    }
+    listeners = listeners.slice();
+    _listeners.set(eventName, listeners);
+    return remove(listeners, listener);
 
     function remove(arr, listener) {
-      if (!arr) return;
       const index = arr.indexOf(listener);
       if (index !== -1) {
         splice(arr, index, 1);
@@ -137,24 +136,23 @@ function nanobus(name = 'nanobus') {
       if (eventName === '*') {
         _starListeners = [];
       } else {
-        _listeners[eventName] = [];
+        _listeners.set(eventName, []);
       }
     } else {
       _starListeners = [];
-      _listeners = Object.create(null);
+      _listeners.clear();
     }
     return self;
   }
 
   function listeners(eventName) {
-    const listeners = eventName !== '*' ? _listeners[eventName] : _starListeners;
+    const listeners = eventName !== '*' ? _listeners.get(eventName) : _starListeners;
     return listeners ? [...listeners] : [];
   }
 }
 
 function _emit(arr, ...data) {
   if (typeof arr === 'undefined') return;
-  if (arr.length === 0) return;
   for (const listener of arr) {
     listener.apply(listener, data);
   }
