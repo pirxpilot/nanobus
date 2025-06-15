@@ -12,8 +12,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "nanobench": "^2.1.0",
-    "tape": "~5"
+    "nanobench": "^2.1.0"
   },
   "keywords": [
     "emit",
