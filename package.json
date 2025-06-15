@@ -11,8 +11,8 @@
     "remove-array-items": "~2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "nanobench": "^2.1.0",
-    "standard": "~17",
     "tape": "~5"
   },
   "keywords": [
@@ -22,9 +22,7 @@
   "license": "MIT",
   "repository": "pirxpilot/nanobus",
   "scripts": {
-    "bench": "node bench.js",
-    "lint": "standard",
-    "test": "npm run lint && node test.js"
+    "test": "make check"
   },
   "files": [
     "index.js",
