@@ -1,4 +1,13 @@
 
+1.0.1 / 2025-06-16
+==================
+
+ * use Map for listeners
+ * upgrade `nanobench`
+ * replace `tape` with `node:test`
+ * use `biome` as a linter and formatter
+ * remove browserify
+
 1.0.0 / 2022-06-29
 ==================
 
