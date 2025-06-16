@@ -12,14 +12,17 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "nanobench": "^2.1.0"
+    "nanobench": "~3"
   },
   "keywords": [
     "emit",
     "event"
   ],
   "license": "MIT",
-  "repository": "pirxpilot/nanobus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pirxpilot/nanobus.git"
+  },
   "scripts": {
     "test": "make check"
   },

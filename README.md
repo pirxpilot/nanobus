@@ -144,7 +144,7 @@ bus.emit("bar", 100)  // required arguments: [number]
 [npm-url]: https://npmjs.org/package/@pirxpilot/nanobus
 
 [build-url]: https://github.com/pirxpilot/nanobus/actions/workflows/check.yaml
-[build-image]: https://img.shields.io/github/workflow/status/pirxpilot/nanobus/check
+[build-image]: https://img.shields.io/github/actions/workflow/status/pirxpilot/nanobus/check.yaml?branch=main
 
 [deps-image]: https://img.shields.io/librariesio/release/npm/@pirxpilot/nanobus
 [deps-url]: https://libraries.io/npm/@pirxpilot%2Fnanobus
