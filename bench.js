@@ -1,6 +1,6 @@
-const bench = require('nanobench');
-const nanobus = require('./');
-const assert = require('node:assert');
+import assert from 'node:assert';
+import bench from 'nanobench';
+import nanobus from './index.js';
 
 bench('emit 200.000 times', b => {
   const bus = nanobus();

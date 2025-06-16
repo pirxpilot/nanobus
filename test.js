@@ -1,5 +1,5 @@
-const test = require('node:test');
-const nanobus = require('./');
+import test from 'node:test';
+import nanobus from './index.js';
 
 globalThis.DEBUG = true;
 
