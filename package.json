@@ -8,9 +8,9 @@
     "assert": "@pirxpilot/nanoassert"
   },
   "dependencies": {
-    "@pirxpilot/nanoassert": "^1.0.0",
-    "@pirxpilot/nanotiming": "^1.0.0",
-    "remove-array-items": "~2"
+    "@pirxpilot/nanoassert": "~1",
+    "@pirxpilot/nanotiming": "~1",
+    "remove-array-items": "~3"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
