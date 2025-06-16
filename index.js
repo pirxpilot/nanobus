@@ -1,10 +1,8 @@
-const splice = require('remove-array-items');
-const nanotiming = require('@pirxpilot/nanotiming');
-const assert = require('assert');
+import assert from 'assert';
+import nanotiming from '@pirxpilot/nanotiming';
+import splice from 'remove-array-items';
 
-module.exports = nanobus;
-
-function nanobus(name = 'nanobus') {
+export default function nanobus(name = 'nanobus') {
   let _starListeners = [];
   const _listeners = new Map();
 

@@ -8,14 +8,15 @@ Fork of [nanobus]. Tiny message bus.
 
 ## Usage
 ```js
-var nanobus = require('nanobus')
-var bus = nanobus()
+import nanobus from 'nanobus';
+
+const bus = nanobus();
 
 bus.on('foo', function (color) {
-  console.log('color is', color)
-})
+  console.log('color is', color);
+});
 
-bus.emit('foo', 'blue')
+bus.emit('foo', 'blue');
 ```
 
 ## FAQ
