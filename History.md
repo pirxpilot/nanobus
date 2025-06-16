@@ -1,4 +1,10 @@
 
+2.0.0 / 2025-06-16
+==================
+
+ * upgrade `remove-array-items` to ~3
+ * transition to ESM format
+
 1.0.2 / 2025-06-16
 ==================
 
