@@ -2,13 +2,13 @@ const bench = require('nanobench');
 const nanobus = require('./');
 const assert = require('node:assert');
 
-bench('emit 200.000 times', function (b) {
+bench('emit 200.000 times', b => {
   const bus = nanobus();
   const obj = { bin: 'baz' };
-  bus.on('foo:bar', function (data) {
+  bus.on('foo:bar', data => {
     assert.equal(data, obj, 'data was same');
   });
-  bus.on('beep:boop', function (data) {
+  bus.on('beep:boop', data => {
     assert.equal(data, undefined);
   });
 
@@ -20,9 +20,9 @@ bench('emit 200.000 times', function (b) {
   b.end();
 });
 
-bench('emit once 200.000 times', function (b) {
+bench('emit once 200.000 times', b => {
   const bus = nanobus();
-  bus.once('foo:bar', function (_data) {
+  bus.once('foo:bar', _data => {
     assert(true);
   });
 
@@ -34,7 +34,7 @@ bench('emit once 200.000 times', function (b) {
   b.end();
 });
 
-bench('run multiple * tests 200.000 times', function (b) {
+bench('run multiple * tests 200.000 times', b => {
   const bus = nanobus();
   let i = 0;
 

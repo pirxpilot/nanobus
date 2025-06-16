@@ -1,6 +1,6 @@
 const splice = require('remove-array-items');
 const nanotiming = require('@pirxpilot/nanotiming');
-const assert = require('node:assert');
+const assert = require('assert');
 
 module.exports = nanobus;
 

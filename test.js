@@ -16,7 +16,7 @@ test('nanobus', async t => {
     t.assert.throws(bus.removeListener.bind(bus, 'foo'), /function/);
 
     const s = Symbol('event');
-    const fn = function () {};
+    const fn = () => {};
     t.assert.doesNotThrow(bus.emit.bind(bus, s));
     t.assert.doesNotThrow(bus.on.bind(bus, s, fn));
     t.assert.doesNotThrow(bus.once.bind(bus, s, fn));
@@ -27,19 +27,19 @@ test('nanobus', async t => {
     t.plan(4);
     const bus = nanobus();
     const obj = { bin: 'baz' };
-    bus.on('foo:bar', function (data) {
+    bus.on('foo:bar', data => {
       t.assert.equal(data, obj, 'data was same');
     });
 
     bus.emit('foo:bar', obj);
 
-    bus.on('beep:boop', function (data) {
+    bus.on('beep:boop', data => {
       t.assert.equal(data, undefined);
     });
 
     bus.emit('beep:boop');
 
-    bus.on('baz:floop', function (arg1, arg2) {
+    bus.on('baz:floop', (arg1, arg2) => {
       t.assert.equal(arg1, 'arg1', 'data was same');
       t.assert.equal(arg2, 'arg2', 'data was same');
     });
@@ -51,22 +51,22 @@ test('nanobus', async t => {
     t.plan(4);
     let i = 0;
     const bus = nanobus();
-    bus.on('foo:bar', function (_data) {
+    bus.on('foo:bar', _data => {
       t.assert.equal(i, 1);
     });
 
-    bus.prependListener('foo:bar', function (_data) {
+    bus.prependListener('foo:bar', _data => {
       t.assert.equal(i, 0);
       i++;
     });
 
     bus.emit('foo:bar');
 
-    bus.on('*', function (_data) {
+    bus.on('*', _data => {
       t.assert.equal(i, 1);
     });
 
-    bus.prependListener('*', function (_eventName, data) {
+    bus.prependListener('*', (_eventName, data) => {
       t.assert.equal(i, data);
       i++;
     });
@@ -79,11 +79,11 @@ test('nanobus', async t => {
     t.plan(3);
     let i = 0;
     const bus = nanobus();
-    bus.on('foo:bar', function (_data) {
+    bus.on('foo:bar', _data => {
       t.assert.equal(i, 1);
     });
 
-    bus.prependOnceListener('foo:bar', function (_data) {
+    bus.prependOnceListener('foo:bar', _data => {
       t.assert.equal(i, 0);
       i++;
     });
@@ -95,7 +95,7 @@ test('nanobus', async t => {
   await t.test('should emit messages once', t => {
     t.plan(1);
     const bus = nanobus();
-    bus.once('foo:bar', function (_data) {
+    bus.once('foo:bar', _data => {
       t.assert.ok('called');
     });
 
@@ -134,15 +134,15 @@ test('nanobus', async t => {
   await t.test('should trigger wildcard once', t => {
     t.plan(3);
     const bus = nanobus();
-    bus.once('*', function (_data) {
+    bus.once('*', _data => {
       t.assert.ok('called');
     });
 
-    bus.on('foo:bar', function (_data) {
+    bus.on('foo:bar', _data => {
       t.assert.ok('called foo:bar');
     });
 
-    bus.on('foo:baz', function (_data) {
+    bus.on('foo:baz', _data => {
       t.assert.ok('called foo:baz');
     });
 
@@ -274,10 +274,10 @@ test('nanobus', async t => {
   await t.test('should be able to remove listeners that have not been attached', t => {
     const bus = nanobus();
 
-    t.assert.doesNotThrow(function () {
+    t.assert.doesNotThrow(() => {
       bus.removeListener('yay', handler);
     }, 'removes unattched "yay" event');
-    t.assert.doesNotThrow(function () {
+    t.assert.doesNotThrow(() => {
       bus.removeListener('*', handler);
     }, 'removes unattached "*" event');
 
@@ -307,27 +307,27 @@ test('nanobus', async t => {
     const obj = { foo: 'bar' };
     const bus = nanobus();
 
-    bus.on('foo', function (data) {
+    bus.on('foo', data => {
       t.assert.deepEqual(data, obj);
     });
 
-    bus.on('foo', function (data) {
+    bus.on('foo', data => {
       t.assert.deepEqual(data, obj);
     });
 
-    bus.on('foo', function (data) {
+    bus.on('foo', data => {
       t.assert.deepEqual(data, obj);
     });
 
-    bus.on('*', function (_name, data) {
+    bus.on('*', (_name, data) => {
       t.assert.deepEqual(data, obj);
     });
 
-    bus.on('*', function (_name, data) {
+    bus.on('*', (_name, data) => {
       t.assert.deepEqual(data, obj);
     });
 
-    bus.on('*', function (_name, data) {
+    bus.on('*', (_name, data) => {
       t.assert.deepEqual(data, obj);
     });
 

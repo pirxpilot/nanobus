@@ -30,22 +30,25 @@
         "noUndeclaredVariables": "error",
         "noUnusedVariables": "error"
       },
-      "complexity": {
-        "noForEach": "off",
-        "useArrowFunction": "off",
-        "useLiteralKeys": "off"
-      },
       "style": {
-        "noParameterAssign": "off",
-        "useTemplate": "off"
-      },
-      "performance": {
-        "noDelete": "off"
+        "useNodejsImportProtocol": "off",
+        "noParameterAssign": "off"
       },
       "suspicious": {
-        "noAssignInExpressions": "off",
         "noExplicitAny": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["test.js"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNodejsImportProtocol": "error"
+          }
+        }
+      }
+    }
+  ]
 }
