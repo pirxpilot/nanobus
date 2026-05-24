@@ -4,16 +4,13 @@
   "version": "2.0.0",
   "type": "module",
   "exports": "./index.js",
-  "browser": {
-    "assert": "@pirxpilot/nanoassert"
-  },
   "dependencies": {
-    "@pirxpilot/nanoassert": "~1",
-    "@pirxpilot/nanotiming": "~1",
+    "@pirxpilot/nanoassert": "~2",
+    "@pirxpilot/nanotiming": "~2",
     "remove-array-items": "~3"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "2.4.15",
     "nanobench": "~3"
   },
   "keywords": [
