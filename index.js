@@ -1,4 +1,4 @@
-import assert from 'assert';
+import assert from '@pirxpilot/nanoassert';
 import nanotiming from '@pirxpilot/nanotiming';
 import splice from 'remove-array-items';
 
